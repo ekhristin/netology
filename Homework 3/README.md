@@ -215,7 +215,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 ```
 
-"docker-compose.yaml" с содержимым:
+"nanon" с содержимым:
 
 ```
 version: "3"
@@ -226,13 +226,29 @@ services:
     ports:
     - "5000:5000"
 ```
-
+![](Pasted%20image%2020250125092105.png)
 И выполните команду "docker compose up -d". Какой из файлов был запущен и почему? (подсказка: [https://docs.docker.com/compose/compose-application-model/#the-compose-file](https://docs.docker.com/compose/compose-application-model/#the-compose-file) )
-
+![](Pasted%20image%2020250125101121.png)
 2. Отредактируйте файл compose.yaml так, чтобы были запущенны оба файла. (подсказка: [https://docs.docker.com/compose/compose-file/14-include/](https://docs.docker.com/compose/compose-file/14-include/))
-    
+```
+version: "3"
+include:
+  - docker-compose.yaml
+services:
+  portainer:
+    network_mode: host
+    image: portainer/portainer-ce:latest
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+
+```
+![](Pasted%20image%2020250125104222.png)
 3. Выполните в консоли вашей хостовой ОС необходимые команды чтобы залить образ custom-nginx как custom-nginx:latest в запущенное вами, локальное registry. Дополнительная документация: [https://distribution.github.io/distribution/about/deploying/](https://distribution.github.io/distribution/about/deploying/)
-    
+```
+ docker tag custom-nginx:1.0.0 127.0.0.1:5000/custom-nginx:latest
+ docker push 127.0.0.1:5000/custom-nginx:latest
+```
+![](Pasted%20image%2020250126101321.png)
 4. Откройте страницу "[https://127.0.0.1:9000](https://127.0.0.1:9000/)" и произведите начальную настройку portainer.(логин и пароль адмнистратора)
     
 5. Откройте страницу "[http://127.0.0.1:9000/#!/home](http://127.0.0.1:9000/#!/home)", выберите ваше local окружение. Перейдите на вкладку "stacks" и в "web editor" задеплойте следующий компоуз:
@@ -247,13 +263,17 @@ services:
     ports:
       - "9090:80"
 ```
-
+![](Pasted%20image%2020250126103935.png)
+![](Pasted%20image%2020250126104219.png)
 6. Перейдите на страницу "[http://127.0.0.1:9000/#!/2/docker/containers](http://127.0.0.1:9000/#!/2/docker/containers)", выберите контейнер с nginx и нажмите на кнопку "inspect". В представлении <> Tree разверните поле "Config" и сделайте скриншот от поля "AppArmorProfile" до "Driver".
-    
+![](Pasted%20image%2020250126104630.png)
 7. Удалите любой из манифестов компоуза(например compose.yaml). Выполните команду "docker compose up -d". Прочитайте warning, объясните суть предупреждения и выполните предложенное действие. Погасите compose-проект ОДНОЙ(обязательно!!) командой.
-    
-
-В качестве ответа приложите скриншоты консоли, где видно все введенные команды и их вывод, файл compose.yaml , скриншот portainer c задеплоенным компоузом.
+![](Pasted%20image%2020250126105300.png)
+Сompose выдал предупреждение о том, что в проекте найдены потерянные контейнеры, в данном случае **docker-portainer-1**. Compose предлгает запустить команду с флагом --remove-orphans, для удаления контейнеров которые не имеют манифеста.
+Выполнил предложенное действие.
+![](Pasted%20image%2020250126105956.png)
+Погасил проект одной командой 
+![](Pasted%20image%2020250126110216.png)
 
 ---
 
