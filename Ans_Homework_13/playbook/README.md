@@ -95,7 +95,13 @@ ansible-playbook -i inventory/prod.yml site.yml
 ```
 ansible-playbook -i inventory/prod.yml site.yml -e "clickhouse_version=22.3.3.4 vector_version=0.42.0"
 ```
+Пакеты участвующие в инсталляции 
+```
+https://packages.clickhouse.com/rpm/stable/clickhouse-common-static-22.3.3.44.x86_64.rpm
+https://packages.clickhouse.com/rpm/stable/clickhouse-client-22.3.3.44.noarch.rpm
+https://packages.clickhouse.com/rpm/stable/clickhouse-server-22.3.3.44.x86_64.rpm
 
+```
 
 ---
 
