@@ -135,11 +135,11 @@ clickhouse:
 systemctl status clickhouse-server
 ```
 
-1. **Тестовый запрос:**
+2. **Тестовый запрос:**
 ```
 clickhouse-client --query="SELECT 1"
 ```
-2. **HTTP-интерфейс:**
+3. **HTTP-интерфейс:**
 ```
 curl -s "http://localhost:8123/?query=SELECT+1"
 ```
