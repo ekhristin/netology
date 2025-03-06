@@ -50,3 +50,6 @@ https://packages.clickhouse.com/rpm/stable/clickhouse-server-22.3.3.44.x86_64.rp
 Выполненное домашнее задание пришлите в виде ссылки на .md-файл в вашем репозитории.
 
 ---
+### Выполнено задание 
+Для ознакомления с задание необходимо перейти по [ссылке](https://github.com/ekhristin/netology/blob/main/Ans_Homework_13/playbook/README.md) 
+
