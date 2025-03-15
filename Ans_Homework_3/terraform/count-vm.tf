@@ -25,7 +25,7 @@ variable "yandex_compute_instance_web" {
       cores         = 2
       memory        = 4
       core_fraction = 5
-      count_vms = 4 #количество машин
+      count_vms = 3 #количество машин
       platform_id = "standard-v1"
     }]
 }
@@ -41,7 +41,7 @@ variable "boot_disk_web" {
   }]
 }
 
-
+# Ресурс для создания виртуальной машины
 resource "yandex_compute_instance" "centos_stream_9" {
   name        = "${var.yandex_compute_instance_web[0].vm_name}-${count.index+1}"
   platform_id = var.yandex_compute_instance_web[0].platform_id
@@ -63,7 +63,7 @@ resource "yandex_compute_instance" "centos_stream_9" {
   }
 
   metadata = {
-    ssh-keys = "centos:${local.ssh-keys}"
+    ssh-keys = "test:${local.ssh-keys}" #не забываем сменить на свой акаунт
     serial-port-enable = "1"
   }
 
