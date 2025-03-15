@@ -156,7 +156,7 @@
       ansible.builtin.stat:
         path: /var/www/lighthouse/.git
       register: lighthouse_repo
-    - name: Ensure safe.directory is set for /var/www/lighthouse
+    - name: Ensure safe.directory is set for lighthouse
       ansible.builtin.shell:
         cmd: "git config --global --add safe.directory /var/www/lighthouse"
       args:

@@ -4,19 +4,19 @@ clickhouse:
     centos9-1:
       ansible_connection: ssh
       ansible_ssh_user: test
-      ansible_host: 84.201.174.134
+      ansible_host: 158.160.63.74
       ansible_private_key_file: ~/.ssh/id_ed25519
 vector:
   hosts:
     centos9-2:
       ansible_connection: ssh
       ansible_ssh_user: test
-      ansible_host: 89.169.134.181
+      ansible_host: 158.160.63.5
       ansible_private_key_file: ~/.ssh/id_ed25519
 lighthouse:
   hosts:
     centos9-3:
       ansible_connection: ssh
       ansible_ssh_user: test
-      ansible_host: 89.169.138.203
+      ansible_host: 51.250.75.182
       ansible_private_key_file: ~/.ssh/id_ed25519
