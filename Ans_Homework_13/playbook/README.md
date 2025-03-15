@@ -1,175 +1,418 @@
-# ClickHouse and Vector Installation Playbook
+# ClickHouse  Vector  Installation Playbook
 
-[![Ansible Role](https://img.shields.io/badge/ansible-playbook-v2.9+-blue.svg)](https://github.com/yourusername/clickhouse-vector-playbook) [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://chat.qwen.ai/c/LICENSE)
+[[License](https://img.shields.io/badge/license-MIT-green.svg)
 
-Этот плейбук Ansible устанавливает и настраивает **ClickHouse** (сервер базы данных) и **Vector** (инструмент для сбора логов) на серверах Linux. Он автоматизирует процесс загрузки пакетов, их установки, настройки служб и создания необходимых баз данных.
+# **Документация к Ansible Playbook**
 
----
+## **Описание**
 
-## Содержание
+Этот плейбук Ansible предназначен для автоматизации развертывания и настройки инфраструктуры, состоящей из трех компонентов:
 
-- [Требования](#Требования)
-- [Установка](#Установка)
-- [Использование](#Использование)
-- [Переменные](#Переменные)
-- [Пример inventory](#Пример inventory)
-- [Проверка работы](#Проверка работы)
-- [Контакты](#Контакты)
+1. **ClickHouse** — распределенная система управления базами данных.
+2. **Vector** — инструмент для сбора, обработки и отправки логов и метрик.
+3. **Lighthouse** — приложение для мониторинга и анализа данных.
 
----
+Плейбук выполняет следующие задачи:
 
-## Требования
-
-- **Ansible** : версия 2.9 или выше.
-- **Операционная система удаленного сервера**: поддерживается только семейство Linux (CentOS9, Fedora).
-- **Доступ к интернету** : требуется для загрузки пакетов ClickHouse и Vector.
-
-Убедитесь, что Ansible установлен на вашем компьютере:
-
-```bash
-ansible --version
-```
-
-Если Ansible не установлен, выполните следующую команду:
-```bash
-pip install ansible
-```
+- Создает необходимые директории.
+- Клонирует репозитории с исходным кодом.
+- Настрояет службы и конфигурационные файлы.
+- Убеждается в корректной работе всех компонентов.
 
 ---
 
-## Установка
+## **Требования**
 
-1. Скопируйте себе папку воспользовавшись сервисом  https://downgit.github.io/#/home
+### **Общие требования**
 
-Ссылка на репу https://github.com/ekhristin/netology/tree/main/Ans_Homework_13/playbook
-Ссылка на скачивание https://downgit.github.io/#/home?url=https://github.com/ekhristin/netology/tree/main/Ans_Homework_13/playbook
+- **Ansible версии 2.9 или выше** .
+- **Python 3.x** установлен на контролирующем узле.
+- Доступ к управляемым хостам через SSH.
+- Управляемые хосты должны иметь установленный пакет `git`.
 
+### **Требования к операционной системе**
 
-2. **Создайте файл inventory:**
-    
-    Создайте файл `inventory` или используйте существующий. Пример файла находится в разделе [Пример inventory](https://github.com/ekhristin/netology/blob/main/Ans_Homework_13/playbook/inventory/prod.yml)
-    
-3. **Настройте переменные:**
+- Поддерживаемые ОС: CentOS Stream 9.
+- Необходимые порты:
+    - ClickHouse: TCP 9000 (клиентский доступ), TCP 8123 (HTTP).
+    - Vector: зависит от настроек конфигурации.
+    - Lighthouse: зависит от приложения.
 
-Отредактируйте файл group_vars/clickhouse/vars.yml, чтобы указать версии ClickHouse и Vector:
+---
 
-```
-clickhouse_version: "22.3.3.44"
+## **Переменные**
 
-clickhouse_packages:
+Все переменные находятся в файлах `group_vars` или определены непосредственно в плейбуке. Ниже представлены основные переменные:
 
-- clickhouse-client
+### **Обязательные переменные**
 
-- clickhouse-server
+|Переменная|Описание|Пример значения|
+|---|---|---|
+|`clickhouse_vcs`|URL репозитория ClickHouse|`https://github.com/ClickHouse/ClickHouse.git`|
+|`vector_vcs`|URL репозитория Vector|`https://github.com/vectordotdev/vector.git`|
+|`lighthouse_vcs`|URL репозитория Lighthouse|`https://github.com/VKCOM/lighthouse.git`|
+|`clickhouse_location_dir`|Путь для установки ClickHouse|`/var/lib/clickhouse`|
+|`vector_location_dir`|Путь для установки Vector|`/var/lib/vector`|
+|`lighthouse_location_dir`|Путь для установки Lighthouse|`/var/www/lighthouse`|
 
-- clickhouse-common-static
+### **Необязательные переменные**
+
+|Переменная|Описание|Пример значения|
+|---|---|---|
+|`vector_data_dir`|Директория для хранения данных Vector|`/var/lib/vector/data`|
+|`lighthouse_repo`|Использовать ли репозиторий для Lighthouse|`true`или`false`|
+
+---
+
+## **Установка**
+
+### **Шаг 1: Установка Ansible**
+
+Убедитесь, что Ansible установлен на вашем контролирующем узле. Для установки выполните следующую команду:
+
+#### Ubuntu/Debian:
+
+bash
+
+Копировать
+
+1
+
+sudo apt update && sudo apt install ansible
+
+#### CentOS/RHEL:
+
+bash
+
+Копировать
+
+1
+
+sudo yum install epel-release && sudo yum install ansible
+
+### **Шаг 2: Клонирование репозитория**
+
+Клонируйте репозиторий с плейбуком:
+
+bash
+
+Копировать
+
+1
+
+2
+
+git clone https://github.com/ekhristin/netology.git
+
+cd netology/Ans_Homew3/playbook
+
+### **Шаг 3: Настройка инвентаря**
+
+## Создайте файл инвентаря (`inventory/prod.yaml`) со списком хостов. Пример: ```yaml
+
+all: children: clickhouse: hosts: centos9-1: ansible_host: 192.168.1.10 ansible_user: user1 vector: hosts: centos9-2: ansible_host: 192.168.1.11 ansible_user: user2 lighthouse: hosts: centos9-3: ansible_host: 192.168.1.12 ansible_user: user3
+
+Копировать
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
 
   
 
-vector_version: "0.42.0"
-
-vector_architecture: "x86_64"
-```
 ---
 
-## Использование
+  
 
-### Запуск плейбука
+## **Запуск плейбука**
 
-Чтобы запустить плейбук, выполните следующую команду:
-```
-ansible-playbook -i inventory/prod.yml site.yml
-```
+  
 
+### **Шаг 1: Проверка синтаксиса**
 
-## Переменные
+Перед запуском убедитесь, что плейбук корректен:
 
-| Переменная            | Описание                       | По умолчанию  |
-| --------------------- | ------------------------------ | ------------- |
-| `clickhouse_version`  | Версия ClickHouse              | `"22.3.3.44"` |
-| `vector_version`      | Версия Vector                  | `"0.42.0"`    |
-| `vector_architecture` | Архитектура системы для Vector | `"x86_64"`    |
+```bash
 
-Вы можете переопределить эти переменные в файле `group_vars/clickhouse/vars.yml` или передать их через CLI:
+ansible-playbook -i inventory/prod.yaml site.yml --syntax-check
 
-```
-ansible-playbook -i inventory/prod.yml site.yml -e "clickhouse_version=22.3.3.4 vector_version=0.42.0"
-```
-Пакеты участвующие в инсталляции 
-```
-https://packages.clickhouse.com/rpm/stable/clickhouse-common-static-22.3.3.44.x86_64.rpm
-https://packages.clickhouse.com/rpm/stable/clickhouse-client-22.3.3.44.noarch.rpm
-https://packages.clickhouse.com/rpm/stable/clickhouse-server-22.3.3.44.x86_64.rpm
+### **Шаг 2: Запуск плейбука**
 
-```
+Запустите плейбук с указанием инвентаря:
 
----
+bash
 
-## Пример inventory
+Копировать
 
-Пример файла `inventory`:
-```
-clickhouse:
-  hosts:
-    clickhouse-01:
-      ansible_connection: ssh
-      ansible_ssh_user: user
-      ansible_host: erver1.example.com`
-      ansible_private_key_file: ~/.ssh/id_ed25519
-```
+1
 
+ansible-playbook -i inventory/prod.yaml site.yml
 
-Замените `server1.example.com` и поле user на реальные значения.
+### **Шаг 3: Просмотр детального вывода**
+
+Если возникают проблемы, используйте флаг `-vvv` для получения подробного вывода:
+
+bash
+
+Копировать
+
+1
+
+ansible-playbook -i inventory/prod.yaml site.yml -vvv
 
 ---
 
-## Проверка работы
+## **Структура проекта**
 
-После выполнения плейбука вы можете проверить работу ClickHouse и Vector следующими способами:
+Проект имеет следующую структуру:
 
+Копировать
 
-## Проверка ClickHouse
+1
 
-1. **Статус службы:**
-```
-systemctl status clickhouse-server
-```
+2
 
-2. **Тестовый запрос:**
-```
-clickhouse-client --query="SELECT 1"
-```
-3. **HTTP-интерфейс:**
-```
-curl -s "http://localhost:8123/?query=SELECT+1"
-```
+3
 
+4
 
-## Проверка Vector
+5
 
-1. **Статус службы:**
+6
 
-```
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+/playbook
+
+├── group_vars/
+
+│ ├── all.yaml
+
+│ ├── clickhouse.yaml
+
+│ ├── vector.yaml
+
+│ └── lighthouse.yaml
+
+├── inventory/
+
+│ └── prod.yaml
+
+├── roles/
+
+│ ├── clickhouse/
+
+│ ├── vector/
+
+│ └── lighthouse/
+
+├── site.yml
+
+└── README.md
+
+- **`group_vars/`** : Содержит общие переменные для групп хостов.
+- **`inventory/`** : Файлы инвентаря для разных сред (например, `prod.yaml` для production).
+- **`roles/`** : Роли для каждого компонента (ClickHouse, Vector, Lighthouse).
+- **`site.yml`** : Основной плейбук, который оркестрирует выполнение ролей.
+- **`README.md`** : Данная документация.
+
+---
+
+## **Настройка переменных**
+
+Переменные можно настраивать в файлах `group_vars/` или передавать через параметр `-e` при запуске плейбука.
+
+## Пример настройки переменных в `group_vars/all.yaml`: ```yaml
+
+clickhouse_vcs: "[https://github.com/ClickHouse/ClickHouse.git](https://github.com/ClickHouse/ClickHouse.git) " vector_vcs: "[https://github.com/vectordotdev/vector.git](https://github.com/vectordotdev/vector.git) " lighthouse_vcs: "[https://github.com/VKCOM/lighthouse.git](https://github.com/VKCOM/lighthouse.git) "
+
+clickhouse_location_dir: "/var/lib/clickhouse" vector_location_dir: "/var/lib/vector" lighthouse_location_dir: "/var/www/lighthouse"
+
+Копировать
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+  
+
+---
+
+  
+
+## **Результат работы**
+
+  
+
+После успешного выполнения плейбука вы получите:
+
+1. Развернутый экземпляр ClickHouse с базой данных `vec_logs_db`.
+
+2. Настроенную службу Vector для сбора логов.
+
+3. Развернутое приложение Lighthouse в указанной директории.
+
+  
+
+---
+
+  
+
+## **Тестирование**
+
+  
+
+Для проверки корректности работы компонентов выполните следующие команды:
+
+  
+
+### **ClickHouse**
+
+Подключитесь к ClickHouse и проверьте создание базы данных:
+
+```bash
+
+clickhouse-client -q "SHOW DATABASES;"
+
+### **Vector**
+
+Проверьте статус службы Vector:
+
+bash
+
+Копировать
+
+1
+
 systemctl status vector
-```
 
-2. **Просмотр логов:**
-  
-```
-journalctl -u vector -f
-```
+### **Lighthouse**
 
+Проверьте доступность приложения Lighthouse:
 
+bash
 
----
+Копировать
 
-## Контакты
+1
 
-Если у вас есть вопросы или предложения, свяжитесь с нами:
-
-- Email: [your-email@example.com](mailto:your-email@example.com)
-- GitHub: [@yourusername](https://github.com/yourusername)
+curl http://<lighthouse_host>:<port>
 
 ---
 
-Этот плейбук постоянно развивается. Если вы хотите предложить улучшения или исправления, пожалуйста, создайте pull request!
+## **Частые вопросы**
+
+### **Q: Как добавить новые хосты?**
+
+A: Добавьте их в файл инвентаря (`inventory/prod.yaml`) и перезапустите плейбук.
+
+### **Q: Что делать, если возникла ошибка с правами доступа?**
+
+A: Убедитесь, что все необходимые директории имеют правильные права доступа. Например:
+
+bash
+
+Копировать
+
+1
+
+2
+
+chmod -R 755 /var/lib/clickhouse
+
+chown -R user:group /var/lib/clickhouse
+
+### **Q: Как обновить конфигурацию после изменений?**
+
+A: Перезапустите плейбук:
+
+bash
+
+Копировать
+
+1
+
+ansible-playbook -i inventory/prod.yaml site.yml
+
+---
+
+## **Лицензия**
+
+Этот плейбук распространяется под лицензией MIT. Подробнее см. файл `LICENSE`.
+
+---
+
+## **Контакты**
+
+Если у вас есть вопросы или предложения по улучшению плейбука, свяжитесь с автором:
+
+- Email: [example@example.com](mailto:example@example.com)
+- GitHub: [https://github.com/ekhristin](https://github.com/ekhristin)
+
+---
+
+Эта документация поможет вам успешно развернуть и настроить инфраструктуру с использованием данного плейбука. Если у вас возникнут дополнительные вопросы, обратитесь к разделу "Частые вопросы" или свяжитесь с автором.
