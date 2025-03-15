@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  
+    
+  ubuntu:
+    image: python:latest #ubuntu:latest
+    container_name: ubuntu
+    hostname: ubuntu
+    command: ["sleep", "infinity"]  # Держит контейнер запущенным
+    #command: ["bash", "-c", "tail -f /dev/null"]
+  centos:
+    image: centos/python-36-centos7
+    container_name: centos7
+    hostname: centos7
+    command: ["sleep", "infinity"]  # Держит контейнер запущенным
+    
+  fedora:
+    image: pycontribs/fedora
+    container_name: fedora
+    hostname: fedora
+    command: ["sleep", "infinity"]  # Держит контейнер запущенным

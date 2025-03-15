@@ -1,0 +1,37 @@
+#TEST config from Ansible
+#                                    __   __  __
+#                                    \ \ / / / /
+#                                     \ V / / /
+#                                      \_/  \/
+#
+#                                    V E C T O R
+#                                   Configuration
+#
+# ------------------------------------------------------------------------------
+# Website: https://vector.dev
+# Docs: https://vector.dev/docs
+# Chat: https://chat.vector.dev
+# ------------------------------------------------------------------------------
+
+data_dir: {{ vector_data_dir }}
+
+sources:
+  dummy_logs:
+    type: demo_logs
+    format: syslog
+    interval: 1
+
+sinks:
+  clickhouse_logs:
+    type: clickhouse
+    inputs:
+      - dummy_logs
+    database: {{ clickhouse_db }}
+    endpoint: {{ clickhouse_url }}
+    table: {{ clickhouse_table }}
+    acknowledgements:
+      enabled: false
+    healthcheck:
+      enabled: false
+    compression: gzip
+    skip_unknown_fields: true

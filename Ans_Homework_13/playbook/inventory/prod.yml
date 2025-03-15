@@ -1,0 +1,8 @@
+clickhouse:
+  hosts:
+    clickhouse-01:
+      ansible_connection: ssh
+      ansible_ssh_user: test
+      ansible_host: 84.201.145.102
+      ansible_private_key_file: ~/.ssh/id_ed25519
+
