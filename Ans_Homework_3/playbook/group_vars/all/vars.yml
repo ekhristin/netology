@@ -1,4 +1,0 @@
----
-clickhouse_table: "vec_logs_tb"
-clickhouse_db: "vec_logs_db"
-clickhouse_url: "http://10.0.2.35:8123"
