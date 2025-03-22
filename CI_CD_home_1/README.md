@@ -65,8 +65,10 @@
 ![](Pasted%20image%2020250322111020.png)
 
 ---
+Ссылки на файлы:
 
-
+[another workflow.xml](https://github.com/ekhristin/netology/blob/main/CI_CD_home_1/another%20workflow.xml)
+[bug's.xml](https://github.com/ekhristin/netology/blob/main/CI_CD_home_1/bug's.xml)
 ### Как оформить решение задания
 
 Выполненное домашнее задание пришлите в виде ссылки на .md-файл в вашем репозитории.
