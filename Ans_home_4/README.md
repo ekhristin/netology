@@ -42,13 +42,18 @@ ansible-galaxy install -r requirements.yml -p roles
 5. Перенести нужные шаблоны конфигов в `templates`.
 В [**template**](https://github.com/ekhristin/vector-role/tree/0.42.0/templates)положил файл конфига вектора **vector.yaml.j2**
 6. Опишите в `README.md` обе роли и их параметры. Пример качественной документации ansible role [по ссылке](https://github.com/cloudalchemy/ansible-prometheus).
-[vector readme](https://github.com/ekhristin/vector-role/blob/0.42.0/README.md) [lighthouse readme](https://github.com/ekhristin/lighthouse-role/blob/main/README.md)
+[**vector readme**](https://github.com/ekhristin/vector-role/blob/0.42.0/README.md) [**lighthouse readme**](https://github.com/ekhristin/lighthouse-role/blob/main/README.md)
 7. Повторите шаги 3–6 для LightHouse. Помните, что одна роль должна настраивать один продукт.
+[**vars**](https://github.com/ekhristin/lighthouse-role/blob/main/vars/main.yml)[**default**](https://github.com/ekhristin/lighthouse-role/blob/main/defaults/main.yml)
+В [**template**](https://github.com/ekhristin/lighthouse-role/tree/main/templates)положил файлы конфигов nginx и lighthouse  nginx.conf.j2 lighthouse.conf.j2 
 8. Выложите все roles в репозитории. Проставьте теги, используя семантическую нумерацию. Добавьте roles в `requirements.yml` в playbook.
+[**vector-role**](https://github.com/ekhristin/vector-role) [**lighthouse-role**](https://github.com/ekhristin/lighthouse-role) [**requirements.yml**](https://github.com/ekhristin/netology/blob/main/Ans_home_4/playbook/requirements.yml)
 9. Переработайте playbook на использование roles. Не забудьте про зависимости LightHouse и возможности совмещения `roles` с `tasks`.
+[**playbook/site.yml**](https://github.com/ekhristin/netology/blob/main/Ans_home_4/playbook/site.yml)
 10. Выложите playbook в репозиторий.
+[**playbook**](https://github.com/ekhristin/netology/tree/main/Ans_home_4/playbook)
 11. В ответе дайте ссылки на оба репозитория с roles и одну ссылку на репозиторий с playbook.
-
+[**vector-role**](https://github.com/ekhristin/vector-role) [**lighthouse-role**](https://github.com/ekhristin/lighthouse-role)[**playbook**](https://github.com/ekhristin/netology/tree/main/Ans_home_4/playbook)
 ---
 
 ### Как оформить решение задания
