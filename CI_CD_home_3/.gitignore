@@ -1,0 +1,25 @@
+# Игнорирование чувствительных файлов в terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/.terraform/
+terraform/*.auto.tfvars
+terraform/override.tf
+terraform/*.plan
+terraform/terraform.tfstate.backup
+terraform/cr*
+terraform/.terraform.lock.hcl
+# Игнорирование кэша провайдеров Terraform
+terraform/.terraform/
+
+# Игнорирование логов и временных файлов
+terraform/*.log
+terraform/*.swp
+terraform/*.swo
+terraform/*~
+
+# Игнорирование конфигураций IDE
+terraform/.vscode/
+terraform/.idea/
+
+# Игнорирование ключей
+files/*.pub
