@@ -83,6 +83,6 @@ curl -G http://127.0.0.1:8085
 
 Ссылки на манифесты:
 
-Pod - https://github.com/
+Pod - https://github.com/ekhristin/netology/blob/main/K8S_home_2/pod.yaml
 
-Service - https://github.com/
+Service - https://github.com/ekhristin/netology/blob/main/K8S_home_2/service.yaml
