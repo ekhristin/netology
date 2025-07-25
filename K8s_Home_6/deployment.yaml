@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: volumes
+  namespace: netology
+spec:
+  selector:
+    matchLabels:
+      app: volumes
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: volumes
+    spec:
+      containers:
+      - name: busybox
+        image: busybox:1.28
+        command: ['sh', '-c', 'mkdir -p /testvolume && while true; do echo "Good time $(date)" >> /testvolume/date-time.txt; sleep 5; done']
+        volumeMounts:
+        - name: volume
+          mountPath: /testvolume
+      - name: multitool
+        image: wbitt/network-multitool
+        command: ['sh', '-c', 'while true; do if [ -f "/testvolume/date-time.txt" ]; then echo "[$(date)] $(tail -n 1 /testvolume/date-time.txt)" >> /testvolume/work.txt; else echo "Ожидание файла /testvolume/date-time.txt..."; fi; sleep 5; done'  ]
+        volumeMounts:
+        - name: volume
+          mountPath: /testvolume
+      volumes:
+      - name: volume
+        emptyDir: {}
