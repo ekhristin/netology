@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: multitool-maps
+  namespace: netology
+data:
+  HTTP_PORT: '7880'
+  index.html: |
+    <html>
+    <h1>Welcome</h1>
+    </br>
+    <h1>Hi! This is a configmap Index file </h1>
+    </html>
