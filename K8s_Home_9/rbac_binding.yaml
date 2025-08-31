@@ -1,0 +1,18 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: dev-pod-access
+  namespace: netology
+subjects:
+# Для пользователя dev (из CN сертификата)
+- kind: User
+  name: dev                 # ← ДОЛЖНО БЫТЬ "dev" (CN из сертификата)
+  apiGroup: rbac.authorization.k8s.io
+# Для группы dev-group (из O сертификата) - опционально
+- kind: Group
+  name: dev-group           # ← Группа "dev-group" (O из сертификата)
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: pod-reader          # ← Ссылается на Role выше
+  apiGroup: rbac.authorization.k8s.io

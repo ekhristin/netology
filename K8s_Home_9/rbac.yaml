@@ -1,0 +1,15 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-reader
+  namespace: netology
+rules:
+- apiGroups: [""]           # core API group
+  resources: ["pods"]        # доступ к pods
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]           # core API group  
+  resources: ["pods/log"]    # доступ к логам pods
+  verbs: ["get", "list"]
+- apiGroups: [""]           # core API group
+  resources: ["pods/status"] # доступ к статусу pods (для describe)
+  verbs: ["get"]
