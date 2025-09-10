@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cam-chart.fullname" . }}
+  namespace: {{ .Values.namespaсe }}
+spec:
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      protocol: TCP
+      name: {{ include "cam-chart.fullname" . }}
+  selector:
+    app: {{ include "cam-chart.fullname" .}}

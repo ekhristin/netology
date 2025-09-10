@@ -1,0 +1,6 @@
+image: nginx
+tag: 1.26.2
+repl: 1
+service:
+  port: 80
+  targetPort: 80

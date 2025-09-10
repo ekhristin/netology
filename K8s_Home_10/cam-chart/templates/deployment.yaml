@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cam-chart.fullname" . }}
+  labels:
+    app: {{ include "cam-chart.fullname" . }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "cam-chart.fullname" . }}
+  replicas: {{ .Values.repl }}   
+  template:
+    metadata:
+      labels:
+        app: {{ include "cam-chart.fullname" . }}
+    spec:
+      containers:
+        - name: {{ include "cam-chart.fullname" . }}
+          image: "{{ .Values.image}}:{{ .Values.tag }}"
+          
