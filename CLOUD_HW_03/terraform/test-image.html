@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Просмотр картинки</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .image-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        
+        .info {
+            margin-top: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Просмотр картинки</h1>
+        <div class="image-container">
+            <img src="https://storage.yandexcloud.net/khristin-151025/image.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=YCAJEYIhryyKaWVZVLqBo9PR6%2F20251015%2Fru-central1%2Fs3%2Faws4_request&X-Amz-Date=20251015T142550Z&X-Amz-Expires=7200&X-Amz-Signature=3cc870f0353af01f88ebcd94c0409d144aaa6ae24406fa2c1d46bc3915ff99ce&X-Amz-SignedHeaders=host" 
+                 alt="Загруженная картинка"
+                 onerror="this.style.display='none'; document.getElementById('error-message').style.display='block';">
+            
+            <div id="error-message" style="display: none; color: red; padding: 20px;">
+                Не удалось загрузить изображение. Возможно, ссылка устарела.
+            </div>
+            
+            <div class="info">
+                Изображение загружено из облачного хранилища
+            </div>
+        </div>
+    </div>
+</body>
+</html>
